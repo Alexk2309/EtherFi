@@ -1,9 +1,14 @@
 // Menu bar
+
+// Ethernet
 "ethernet" = "Ethernet";
 "eth_is_connected" = "Connected";
 "eth_not_connected" = "Not connected";
 "eth_preferred" = "Preferred connection";
 "eth_not_preferred" = "Connection is not preferred";
+
+"wifi" = "Wi-Fi";
+
 "no_network_general" = "Network is offline";
 "not_available" = "not available";
 "quit" = "Quit";

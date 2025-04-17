@@ -9,19 +9,36 @@ struct ContentView: View {
     @Binding public var isWiredConnection: Bool
     @Binding public var isPreferred: Bool
     @Binding public var interfaceName: String?
-    
+    @Binding public var isWiFiConnection: Bool
+
     @State public var isInfoSectionExpanded: Bool = true
     @Binding public var currentIpAddr: String
 
-    @Binding public var onlyShowIcon: Bool 
+    @Binding public var onlyShowIcon: Bool
     @Binding public var hideIPinMenu: Bool
     @Binding public var colorStatus: Bool
 
     @Binding public var tabSelection: Int
-
+    
     @Environment(\.openURL) var openURL
     @Environment(\.openSettings) var openSettings
-    
+
+    init(isMenuPresented: Binding<Bool>, isWiredConnection: Binding<Bool>, isPreferred: Binding<Bool>, 
+         interfaceName: Binding<String?>, isWiFiConnection: Binding<Bool>, currentIpAddr: Binding<String>, 
+         onlyShowIcon: Binding<Bool>, hideIPinMenu: Binding<Bool>, colorStatus: Binding<Bool>, 
+         tabSelection: Binding<Int>) {
+        self._isMenuPresented = isMenuPresented
+        self._isWiredConnection = isWiredConnection
+        self._isPreferred = isPreferred
+        self._interfaceName = interfaceName
+        self._isWiFiConnection = isWiFiConnection
+        self._currentIpAddr = currentIpAddr
+        self._onlyShowIcon = onlyShowIcon
+        self._hideIPinMenu = hideIPinMenu
+        self._colorStatus = colorStatus
+        self._tabSelection = tabSelection
+    }
+
     var body: some View {
         MacControlCenterMenu(isPresented: $isMenuPresented) {
             if !onlyShowIcon {
@@ -38,7 +55,23 @@ struct ContentView: View {
                         Text(LocalizedStringKey("eth_not_connected")).foregroundColor(colorStatus ? .red : nil)
                     }
                 }
-                
+
+                Divider()
+
+                HStack {
+                    Text(LocalizedStringKey("wifi"))
+                        .fontWeight(.medium)
+                    Spacer()
+                    Toggle("", isOn: $isWiFiConnection)
+                        .labelsHidden()
+                        .toggleStyle(SwitchToggleStyle())
+                        .scaleEffect(1)
+                        .onChange(of: isWiFiConnection) { _ in
+                            // When the toggle changes, the binding will be updated
+                            // The WBNetworkMonitor will handle the actual toggling
+                        }
+                }
+
                 MenuDisclosureSection(LocalizedStringKey("informations"), isExpanded: $isInfoSectionExpanded) {
                     if !hideIPinMenu {
                         MenuToggle(isOn: .constant(isWiredConnection), image: Image(systemName: "externaldrive.connected.to.line.below")) {

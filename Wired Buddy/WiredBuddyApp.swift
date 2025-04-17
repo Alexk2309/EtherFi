@@ -18,7 +18,7 @@ struct WiredBuddyApp: App {
 
     // Selection index between tabs inside the SettingsView
     @State public var tabSelection = 0
-    
+
     var body: some Scene {
         Settings {
             SettingsView(isConnectionActive: $netMon.isWiredConnection,
@@ -32,6 +32,7 @@ struct WiredBuddyApp: App {
         let _ = NSApplication.shared.setActivationPolicy(hideDockIcon ? .accessory : .regular)
         MenuBarExtra("Wired Buddy", systemImage: netMon.isWiredConnection ? buddies[wiredBuddyImage].imageActive : buddies[wiredBuddyImage].imageInactive) {
             ContentView(isMenuPresented: $isMenuPresented, isWiredConnection: $netMon.isWiredConnection, isPreferred: $netMon.isPreferred, interfaceName: $netMon.interfaceName,
+                        isWiFiConnection: $netMon.isWiFiConnection,
                         currentIpAddr: $netMon.ipAddr,
                         onlyShowIcon: $onlyShowIcon,
                         hideIPinMenu: $hideIPinMenu,
